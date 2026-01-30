@@ -1,0 +1,3 @@
+-- We have a suspect 'Jeremy Bowers'. Lets pull his record
+
+-- Verify if Jeremy Bowers is the murderer using the final query posted in the game
