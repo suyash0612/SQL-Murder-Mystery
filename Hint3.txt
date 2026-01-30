@@ -1,0 +1,32 @@
+-- HINT 3 : FIND PROBABLE WITNESSES
+
+-- SELECT * FROM person
+-- WHERE address_street_name IN ('Northwestern Dr')
+-- ORDER BY address_number DESC
+
+###################################### OUTPUT ######################################
+-- id	name	license_id	address_number	address_street_name	ssn
+-- 14887	Morty Schapiro	118009	4919	Northwestern Dr	111564949 (probable?)
+-- 16371	Annabel Miller	490173	103	Franklin Ave	318771143 (confirmed?)
+
+These are the two probable witnesses who saw the crime happening
+####################################################################################
+
+
+Using the above info try to see if you can build any realtions
+
+-- Witnesses and DL
+
+-- SELECT * FROM drivers_license
+-- WHERE id IN (
+--  SELECT license_id FROM person
+--  WHERE address_street_name IN ('Franklin Ave')
+--  AND name like '%Annabel%'
+--)
+
+-- SELECT * FROM drivers_license
+-- WHERE id IN (
+--  SELECT license_id FROM person
+--  WHERE address_street_name IN ('Northwestern Dr')
+--  ORDER BY address_number DESC LIMIT 1
+--)
