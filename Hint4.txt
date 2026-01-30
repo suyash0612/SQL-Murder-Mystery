@@ -1,0 +1,93 @@
+-- Pulling related data like driver license FROM drivers_license , 
+-- fb_activity FROM facebook_event_checkin 
+-- get_fit_now_member
+-- get_fit_now_check_in
+
+To workout between the witnesses easily, let segregrate the links we are trying to make with different scenarios (tables)
+
+-- ***** WITNESS 1 : Morty Schapiro ******
+			 
+-- 1. dl
+-- id	age	height	eye_color	hair_color	gender	plate_number	car_make	car_model
+-- 118009	64	84	blue	white	male	00NU00	Mercedes-Benz	E-Class
+
+-- 2. fb
+-- person_id	event_id	event_name	date
+-- 14887	4719	The Funky Grooves Tour	20180115
+
+-- 3. membership
+-- could not find data for the membership
+
+-- 4. Check-In Logs
+-- no data, as no membership_id
+
+Seems like we hit the dead-end, lets go for our second witness
+TRY to write your thoughts as you investigate further
+
+
+
+-- ***** WITNESS 2 : Annabel Miller ******
+
+-- 1. dl
+-- id	age	height	eye_color	hair_color	gender	plate_number	car_make	car_model
+-- 490173	35	65	green	brown	female	23AM98	Toyota	Yaris
+
+-- 2. fb
+-- person_id	event_id	event_name	date
+-- 16371	4719	The Funky Grooves Tour	20180115
+
+-- 3. membership
+-- id	person_id	name	membership_start_date	membership_status
+-- 90081	16371	Annabel Miller	20160208	gold
+
+-- 4. Check-In Logs
+-- membership_id	check_in_date	check_in_time	check_out_time
+-- 90081	20180109	1600	1700
+
+-- 5. Income
+-- no data about her income
+
+-- 6. Interview (so someone had recorded Annabel's statement which is stored in this table)
+-- person_id	transcript
+-- 16371	I saw the murder happen, and I recognized the killer from my gym when I was working out last week on January the 9th.
+
+-- 7. Back to check-in logs for the gym
+-- membership_id	check_in_date	check_in_time	check_out_time
+-- X0643	20180109	957	1164
+-- UK1F2	20180109	344	518
+-- XTE42	20180109	486	1124
+-- 1AE2H	20180109	461	944
+-- 6LSTG	20180109	399	515
+-- 7MWHJ	20180109	273	885
+-- GE5Q8	20180109	367	959
+-- 48Z7A	20180109	1600	1730
+-- 48Z55	20180109	1530	1700
+-- 90081	20180109	1600	1700 	(Annabel)
+
+-- membership
+-- SELECT * FROM person WHERE id IN
+-- (SELECT person_id FROM facebook_event_checkin WHERE person_id IN
+-- (Select person_id FROM get_fit_now_member
+-- WHERE id IN (SELECT membership_id FROM get_fit_now_check_in WHERE check_in_date = '20180109'))
+-- AND date = '20180115'
+-- AND person_id IS NOT '16371') -- not Annabel
+
+
+-- SO WHAT DO WE KNOW ???????
+
+-- Both of them( witnesses) have the same event listed 'The Funky Grooves Tour' on the same day
+-- Annabel has some get fit membership and she went there the next day between
+-- 4 - 5pm on the day Jan 15 2018. (It's the same day the murder happened.. 
+-- WOW... we have some leads)
+-- Annabel saw the murder happen, and 
+-- she recognizes the killer from her gym while working out last week
+-- on January the 9th. Need to pull records for this date from check_in
+-- There are 10 people out of which one is Annabel, so we have a suspect list among 9 people
+-- lets trace their fb_activity through person for Jan 15 , the murder day
+-- We have a suspect '(Hope you got the name)'. Lets pull his record
+
+This is the last Hint, I have not names the murderer but the I have almost given you the solution.
+There is final file which list the murderer, use that only to cross check your answer.
+I hope you enjoyed solving the case until now.
+
+
