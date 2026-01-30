@@ -1,0 +1,41 @@
+->  **This is the only hint where I have put it directly along with the output.**
+
+1. This is the first query provided which gives you the list of all tables in the database
+
+SELECT name 
+  FROM sqlite_master
+ where type = 'table'
+
+### Output ###
+
+crime_scene_report
+drivers_license
+facebook_event_checkin
+interview
+get_fit_now_member
+get_fit_now_check_in
+solution
+income
+person
+
+
+2. Further you may use a subquery to extract additional info about all tables without having to search for a table everytime
+
+SELECT sql 
+  FROM sqlite_master
+ where name IN (SELECT name 
+  FROM sqlite_master
+ where type = 'table')
+
+
+### Output ###
+
+CREATE TABLE crime_scene_report ( date integer, type text, description text, city text )
+CREATE TABLE drivers_license ( id integer PRIMARY KEY, age integer, height integer, eye_color text, hair_color text, gender text, plate_number text, car_make text, car_model text )
+CREATE TABLE facebook_event_checkin ( person_id integer, event_id integer, event_name text, date integer, FOREIGN KEY (person_id) REFERENCES person(id) )
+CREATE TABLE interview ( person_id integer, transcript text, FOREIGN KEY (person_id) REFERENCES person(id) )
+CREATE TABLE get_fit_now_member ( id text PRIMARY KEY, person_id integer, name text, membership_start_date integer, membership_status text, FOREIGN KEY (person_id) REFERENCES person(id) )
+CREATE TABLE get_fit_now_check_in ( membership_id text, check_in_date integer, check_in_time integer, check_out_time integer, FOREIGN KEY (membership_id) REFERENCES get_fit_now_member(id) )
+CREATE TABLE solution ( user integer, value text )
+CREATE TABLE income (ssn CHAR PRIMARY KEY, annual_income integer)
+CREATE TABLE person (id integer PRIMARY KEY, name text, license_id integer, address_number integer, address_street_name text, ssn CHAR REFERENCES income (ssn), FOREIGN KEY (license_id) REFERENCES drivers_license (id))
